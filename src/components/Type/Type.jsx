@@ -24,8 +24,15 @@ export const Type = () => {
         >
           <FormControlLabel
             value='officeRent'
-            control={<Radio />}
-            label='Офис'
+            control={<Radio size='small' />}
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Офис
+              </span>
+            }
           />
           <FormControlLabel
             value='buildingRent'

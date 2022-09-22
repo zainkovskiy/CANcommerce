@@ -43,15 +43,15 @@ export const Layout = (props) => {
 
   const getValue = (event) => {
     const name = event.target.name;
-    // if (name === 'PetsAllowed' || name === 'ChildrenAllowed') {
-    //   return event.target.value === 'да' ? true : false;
-    // }
+    if (name === 'IsOccupied') {
+      return event.target.value === 'да' ? true : false;
+    }
     // if (name === 'HasRamp') {
     //   return event.target.value === 'есть' ? true : false;
     // }
-    // if (event.target.type === 'checkbox') {
-    //   return event.target.checked;
-    // }
+    if (event.target.type === 'checkbox') {
+      return event.target.checked;
+    }
     return event.target.value;
   };
 
