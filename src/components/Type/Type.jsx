@@ -13,9 +13,10 @@ export const Type = () => {
     <>
       <span className='form__subtitle text'>Тип объекта</span>
       <RadioGroup
-        defaultValue={currentObject.Category}
+        value={currentObject.Category}
         name='radio-buttons-group'
         onChange={(e) => setTypeValue(e)}
+        sx={{ display: 'block' }}
       >
         <Box
           display='grid'
@@ -37,37 +38,86 @@ export const Type = () => {
           <FormControlLabel
             value='buildingRent'
             control={<Radio />}
-            label='Здание'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Здание
+              </span>
+            }
           />
           <FormControlLabel
             value='shoppingAreaRent'
             control={<Radio />}
-            label='Торговая площадь'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Торговая площадь
+              </span>
+            }
           />
           <FormControlLabel
             value='freeAppointmentObjectRent'
             control={<Radio />}
-            label='Помещение свободного назначения'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Помещение свободного назначения
+              </span>
+            }
           />
           <FormControlLabel
-            value='industryRent '
+            value='industryRent'
             control={<Radio />}
-            label='Производство'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Производство
+              </span>
+            }
           />
           <FormControlLabel
             value='warehouseRent'
             control={<Radio />}
-            label='Склад'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Склад
+              </span>
+            }
           />
           <FormControlLabel
             value='garageRent'
             control={<Radio />}
-            label='Гараж'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Гараж
+              </span>
+            }
           />
           <FormControlLabel
             value='commercialLandRent'
             control={<Radio />}
-            label='Коммерческая земля'
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 14 }}
+              >
+                Коммерческая земля
+              </span>
+            }
           />
         </Box>
       </RadioGroup>
