@@ -19,11 +19,15 @@
     font-size: 14px;
     display: flex;
     align-items: center;
+    &_top{
+      align-items: flex-start;
+    }
   }
   &__action {
     flex-grow: 1;
     position: relative;
     display: flex;
+    flex-wrap: wrap;
     &_column {
       display: flex;
       gap: 1rem;
