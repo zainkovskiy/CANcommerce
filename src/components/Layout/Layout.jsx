@@ -46,9 +46,12 @@ export const Layout = (props) => {
     if (name === 'IsOccupied') {
       return event.target.value === 'да' ? true : false;
     }
-    // if (name === 'HasRamp') {
-    //   return event.target.value === 'есть' ? true : false;
-    // }
+    if (name === 'HasRamp' || name === 'HasShopWindows' || name === 'FurniturePresence' || name === 'HasEncumbrances') {
+      return event.target.value === 'yes' ? true : false;
+    }
+    if (name === 'Type' && event.target.dataset.key === 'OpeningHours') {
+      return event.target.checked ? 'roundTheClock' : 'specific'
+    }
     if (event.target.type === 'checkbox') {
       return event.target.checked;
     }

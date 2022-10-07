@@ -11,11 +11,41 @@ import RadioGroup from '@mui/material/RadioGroup';
 
 import { LayoutContext } from 'components/Layout';
 
-export const LayoutOfficeRent = ({ register, errors }) => {
+export const LayoutShoppingAreaRent = ({ register, errors }) => {
   const { currentObject, handleChange } = useContext(LayoutContext);
   return (
     <>
       <span className='form__subtitle text'>Об объекте</span>
+      <div className='field'>
+        <div className='field__name text'>Тип помещения</div>
+        <div className='field__action'>
+          <span className='field__error-icon'></span>
+          <Select
+            value={currentObject?.PlacementType || ''}
+            name='PlacementType'
+            size='small'
+            sx={{ minWidth: 223 }}
+            displayEmpty
+            error={errors?.PlacementType ? true : false}
+            {...register('PlacementType', {
+              required: 'Укажите период',
+              onChange: (e) => handleChange(e),
+            })}
+          >
+            <MenuItem
+              disabled
+              value=''
+            >
+              <em>Не выбрано</em>
+            </MenuItem>
+            <MenuItem value={'shoppingMall'}>Помещение в торговом комплексе</MenuItem>
+            <MenuItem value={'streetRetail'}>Street retail</MenuItem>
+          </Select>
+          <span className='field__error-text text'>
+            {errors?.PlacementType?.message || ''}
+          </span>
+        </div>
+      </div>
       <div className='field'>
         <div className='field__name text'>
           <span>
@@ -106,69 +136,29 @@ export const LayoutOfficeRent = ({ register, errors }) => {
         </div>
       </div>
       <div className='field'>
-        <div className='field__name text'>Помещение занято</div>
+        <div className='field__name text'>Витринные окна</div>
         <div className='field__action'>
           <ToggleButtonGroup
             color='primary'
             exclusive
             onChange={(event) => handleChange(event)}
-            value={currentObject?.IsOccupied ? 'да' : 'нет'}
+            value={currentObject?.HasShopWindows ? 'yes' : 'no'}
           >
             <ToggleButton
               size='small'
               sx={{ width: 100 }}
-              name='IsOccupied'
-              value='да'
+              name='HasShopWindows'
+              value='yes'
             >
-              Да
+              есть
             </ToggleButton>
             <ToggleButton
               size='small'
               sx={{ width: 100 }}
-              name='IsOccupied'
-              value='нет'
+              name='HasShopWindows'
+              value='no'
             >
               Нет
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Планировка</div>
-        <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.Layout || null}
-          >
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='cabinet'
-            >
-              Кабинетная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='openSpace'
-            >
-              Открытая
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='corridorplan'
-            >
-              Коридорная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='mixed'
-            >
-              Смешанная
             </ToggleButton>
           </ToggleButtonGroup>
         </div>
@@ -240,6 +230,34 @@ export const LayoutOfficeRent = ({ register, errors }) => {
         </div>
       </div>
       <div className='field'>
+        <div className='field__name text'>Помещение занято</div>
+        <div className='field__action'>
+          <ToggleButtonGroup
+            color='primary'
+            exclusive
+            onChange={(event) => handleChange(event)}
+            value={currentObject?.IsOccupied ? 'да' : 'нет'}
+          >
+            <ToggleButton
+              size='small'
+              sx={{ width: 100 }}
+              name='IsOccupied'
+              value='да'
+            >
+              Да
+            </ToggleButton>
+            <ToggleButton
+              size='small'
+              sx={{ width: 100 }}
+              name='IsOccupied'
+              value='нет'
+            >
+              Нет
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      </div>
+      <div className='field'>
         <div className='field__name text'>Состояние</div>
         <div className='field__action'>
           <Select
@@ -274,7 +292,7 @@ export const LayoutOfficeRent = ({ register, errors }) => {
             color='primary'
             exclusive
             onChange={(event) => handleChange(event)}
-            value={currentObject?.FurniturePresence || null}
+            value={currentObject?.FurniturePresence ? 'yes' : 'no'}
           >
             <ToggleButton
               size='small'
@@ -296,124 +314,26 @@ export const LayoutOfficeRent = ({ register, errors }) => {
         </div>
       </div>
       <div className='field'>
-        <div className='field__name text'>Доступ</div>
+        <div className='field__name text'>Вход</div>
         <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
+          <Select
+            value={currentObject?.HouseLineType || ''}
+            name='HouseLineType'
             onChange={(event) => handleChange(event)}
-            value={currentObject?.AccessType || null}
-          >
-            <ToggleButton
-              size='small'
-              name='AccessType'
-              value='free'
-            >
-              Свободный
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='AccessType'
-              value='passSystem'
-            >
-              Пропускная система
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Парковка</div>
-        <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.Parking?.Type || null}
-          >
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='ground'
-              data-key='Parking'
-            >
-              Наземная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='multilevel'
-              data-key='Parking'
-            >
-              Многоуровневая
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='underground'
-              data-key='Parking'
-            >
-              Подземная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='roof'
-              data-key='Parking'
-            >
-              На крыше
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Количество мест</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
             size='small'
-            type='number'
-            name='PlacesCount'
-            inputProps={{ 'data-key': 'Parking' }}
-            value={currentObject?.Parking?.PlacesCount || ''}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Стоимость парковки</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            name='PriceMonthly'
-            inputProps={{ 'data-key': 'Parking' }}
-            value={currentObject?.Parking?.PriceMonthly || ''}
-            onChange={(e) => handleChange(e)}
-            disabled={currentObject?.Parking?.IsFree}
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='IsFree'
-            sx={{ ml: '1rem' }}
-            control={
-              <Checkbox
-                checked={currentObject?.Parking?.IsFree || false}
-                inputProps={{ 'data-key': 'Parking' }}
-                size='small'
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Бесплатная
-              </span>
-            }
-          />
+            sx={{ minWidth: 223 }}
+            displayEmpty
+          >
+            <MenuItem
+              disabled
+              value=''
+            >
+              <em>Не выбрано</em>
+            </MenuItem>
+            <MenuItem value={'first'}>Первая</MenuItem>
+            <MenuItem value={'second'}>Вторая</MenuItem>
+            <MenuItem value={'other'}>Иная</MenuItem>
+          </Select>
         </div>
       </div>
       <hr width='100%' />
@@ -431,23 +351,6 @@ export const LayoutOfficeRent = ({ register, errors }) => {
             onChange={(e) => handleChange(e)}
             inputProps={{
               placeholder: 'Например: БЦ Айсберг',
-              'data-key': 'Building'
-            }}
-          />
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Год постройки</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            name='BuildYear'
-            value={currentObject?.Building?.BuildYear || ''}
-            onChange={(e) => handleChange(e)}
-            inputProps={{
               'data-key': 'Building'
             }}
           />
@@ -909,6 +812,99 @@ export const LayoutOfficeRent = ({ register, errors }) => {
               }
             />
           </RadioGroup>
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text field__name_top'>Часы работы</div>
+        <div className='field__action' style={{alignItems: 'center', gap: '0.5rem'}}>
+          <span className="text">с</span>
+          <TextField
+            autoComplete='off'
+            variant='outlined'
+            size='small'
+            type='number'
+            name='From'
+            disabled={currentObject?.OpeningHours?.Type === 'roundTheClock'}
+            value={currentObject?.OpeningHours?.From || ''}
+            onChange={(e) => handleChange(e)}
+            inputProps={{
+              'data-key': 'OpeningHours'
+            }}
+          />
+          <span className="text">до</span>
+          <TextField
+            autoComplete='off'
+            variant='outlined'
+            size='small'
+            type='number'
+            name='To'
+            disabled={currentObject?.OpeningHours?.Type === 'roundTheClock'}
+            value={currentObject?.OpeningHours?.To || ''}
+            onChange={(e) => handleChange(e)}
+            inputProps={{
+              'data-key': 'OpeningHours'
+            }}
+          />
+          <FormControlLabel
+            onChange={(event) => handleChange(event)}
+            name='Type'
+            control={
+              <Checkbox
+                checked={currentObject?.OpeningHours?.Type  === 'roundTheClock' ? true : false}
+                size='small'
+                inputProps={{
+                  'data-key': 'OpeningHours'
+                }}
+              />
+            }
+            label={
+              <span
+                className='text'
+                style={{ fontSize: 12 }}
+              >
+                Круглосуточно
+              </span>
+            }
+          />
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text'>Дни недели</div>
+        <div className='field__action'>
+          <ToggleButtonGroup
+            color='primary'
+            exclusive
+            onChange={(event) => handleChange(event)}
+            value={currentObject?.Building?.WorkingDaysType || null}
+            sx={{
+              width: '100%'
+            }}
+          >
+            <ToggleButton
+              size='small'
+              name='WorkingDaysType'
+              value='everyday'
+              data-key='Building'
+            >
+              Ежедневно
+            </ToggleButton>
+            <ToggleButton
+              size='small'
+              name='WorkingDaysType'
+              value='weekdays'
+              data-key='Building'
+            >
+              Будни
+            </ToggleButton>
+            <ToggleButton
+              size='small'
+              name='WorkingDaysType'
+              value='weekends'
+              data-key='Building'
+            >
+              Выходные
+            </ToggleButton>
+          </ToggleButtonGroup>
         </div>
       </div>
       <hr width='100%' />

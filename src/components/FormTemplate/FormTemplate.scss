@@ -37,6 +37,11 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
     }
+    &_columns-three{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+    }
   }
   &__column {
     display: flex;

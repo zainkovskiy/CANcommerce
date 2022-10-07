@@ -11,30 +11,65 @@ import RadioGroup from '@mui/material/RadioGroup';
 
 import { LayoutContext } from 'components/Layout';
 
-export const LayoutOfficeRent = ({ register, errors }) => {
+export const LayoutBuildingRent = ({ register, errors }) => {
   const { currentObject, handleChange } = useContext(LayoutContext);
   return (
     <>
-      <span className='form__subtitle text'>Об объекте</span>
+      <span className='form__subtitle text'>О здании</span>
       <div className='field'>
-        <div className='field__name text'>
-          <span>
-            Общая площадь, м<sup>2</sup>
-          </span>
-        </div>
+        <div className='field__name text'>Название</div>
         <div className='field__action'>
-          <span className='field__error-icon'></span>
+          <TextField
+            autoComplete='off'
+            variant='outlined'
+            size='small'
+            name='Name'
+            fullWidth
+            value={currentObject?.Building?.Name || ''}
+            onChange={(e) => handleChange(e)}
+            inputProps={{
+              placeholder: 'Например: БЦ Айсберг',
+              'data-key': 'Building'
+            }}
+          />
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text'>Год постройки</div>
+        <div className='field__action'>
           <TextField
             autoComplete='off'
             variant='outlined'
             size='small'
             type='number'
-            value={currentObject?.TotalArea || ''}
+            name='BuildYear'
+            value={currentObject?.Building?.BuildYear || ''}
+            onChange={(e) => handleChange(e)}
+            inputProps={{
+              'data-key': 'Building'
+            }}
+          />
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text'>Площадь здания, м<sup>2</sup></div>
+        <div className='field__action'>
+        <span className='field__error-icon'></span>
+          <TextField
+            autoComplete='off'
+            variant='outlined'
+            size='small'
+            type='number'
+            name='TotalArea'
+            value={currentObject?.Building?.TotalArea || ''}
             error={errors?.TotalArea ? true : false}
             {...register('TotalArea', {
               required: 'Укажите общую площадь',
               onChange: (e) => handleChange(e),
             })}
+            inputProps={{
+              'data-key': 'Building'
+            }}
           />
           <span className='field__error-text text'>
             {errors?.TotalArea?.message || ''}
@@ -42,33 +77,7 @@ export const LayoutOfficeRent = ({ register, errors }) => {
         </div>
       </div>
       <div className='field'>
-        <div className='field__name text'>Этаж</div>
-        <div className='field__action'>
-          <span className='field__error-icon'></span>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            value={currentObject?.FloorNumber || ''}
-            error={errors?.FloorNumber ? true : false}
-            {...register('FloorNumber', {
-              required: 'Укажите этаж',
-              validate: {
-                more: (e) =>
-                  e <= currentObject?.FloorsCount ||
-                  'Должен быть меньше или равен этажности',
-              },
-              onChange: (e) => handleChange(e),
-            })}
-          />
-          <span className='field__error-text text'>
-            {errors?.FloorNumber?.message || ''}
-          </span>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Этажей в доме</div>
+        <div className='field__name text'>Этажей в здании</div>
         <div className='field__action'>
           <span className='field__error-icon'></span>
           <TextField
@@ -106,137 +115,42 @@ export const LayoutOfficeRent = ({ register, errors }) => {
         </div>
       </div>
       <div className='field'>
-        <div className='field__name text'>Помещение занято</div>
+        <div className='field__name text'>Возможное назначение</div>
         <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.IsOccupied ? 'да' : 'нет'}
-          >
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='IsOccupied'
-              value='да'
-            >
-              Да
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='IsOccupied'
-              value='нет'
-            >
-              Нет
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Планировка</div>
-        <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.Layout || null}
-          >
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='cabinet'
-            >
-              Кабинетная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='openSpace'
-            >
-              Открытая
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='corridorplan'
-            >
-              Коридорная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Layout'
-              value='mixed'
-            >
-              Смешанная
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Кол-во мокрых точек</div>
-        <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.WaterPipesCount || null}
-          >
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='WaterPipesCount'
-              value={0}
-            >
-              нет
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='WaterPipesCount'
-              value={1}
-            >
-              1
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='WaterPipesCount'
-              value={2}
-            >
-              2
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='WaterPipesCount'
-              value={3}
-            >
-              3
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              sx={{ width: 100 }}
-              name='WaterPipesCount'
-              value={4}
-            >
-              4
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Электрическая мощность, кВТ</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
+        <span className='field__error-icon'></span>
+          <Select
+            value={currentObject?.Type || ''}
+            name='Type'
             size='small'
-            type='number'
-            name='Power'
-            value={currentObject?.Power || ''}
-            onChange={(e) => handleChange(e)}
-          />
+            sx={{ minWidth: 223 }}
+            displayEmpty
+            error={errors?.Type ? true : false}
+            {...register('Type', {
+              required: {
+                value: true,
+                message: 'Укажите назначение',
+              },
+              onChange: (e) => handleChange(e),
+            })}
+          >
+            <MenuItem
+              disabled
+              value=''
+            >
+              <em>Не выбрано</em>
+            </MenuItem>
+            {selectList.Type.map((li, idx) => (
+              <MenuItem
+                key={idx}
+                value={li.value}
+              >
+                {li.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <span className='field__error-text text'>
+            {errors?.Type?.message || ''}
+          </span>
         </div>
       </div>
       <div className='field'>
@@ -296,169 +210,11 @@ export const LayoutOfficeRent = ({ register, errors }) => {
         </div>
       </div>
       <div className='field'>
-        <div className='field__name text'>Доступ</div>
-        <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.AccessType || null}
-          >
-            <ToggleButton
-              size='small'
-              name='AccessType'
-              value='free'
-            >
-              Свободный
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='AccessType'
-              value='passSystem'
-            >
-              Пропускная система
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Парковка</div>
-        <div className='field__action'>
-          <ToggleButtonGroup
-            color='primary'
-            exclusive
-            onChange={(event) => handleChange(event)}
-            value={currentObject?.Parking?.Type || null}
-          >
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='ground'
-              data-key='Parking'
-            >
-              Наземная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='multilevel'
-              data-key='Parking'
-            >
-              Многоуровневая
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='underground'
-              data-key='Parking'
-            >
-              Подземная
-            </ToggleButton>
-            <ToggleButton
-              size='small'
-              name='Type'
-              value='roof'
-              data-key='Parking'
-            >
-              На крыше
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Количество мест</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            name='PlacesCount'
-            inputProps={{ 'data-key': 'Parking' }}
-            value={currentObject?.Parking?.PlacesCount || ''}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Стоимость парковки</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            name='PriceMonthly'
-            inputProps={{ 'data-key': 'Parking' }}
-            value={currentObject?.Parking?.PriceMonthly || ''}
-            onChange={(e) => handleChange(e)}
-            disabled={currentObject?.Parking?.IsFree}
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='IsFree'
-            sx={{ ml: '1rem' }}
-            control={
-              <Checkbox
-                checked={currentObject?.Parking?.IsFree || false}
-                inputProps={{ 'data-key': 'Parking' }}
-                size='small'
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Бесплатная
-              </span>
-            }
-          />
-        </div>
-      </div>
-      <hr width='100%' />
-      <span className='form__subtitle text'>О здании</span>
-      <div className='field'>
-        <div className='field__name text'>Название</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            name='Name'
-            fullWidth
-            value={currentObject?.Building?.Name || ''}
-            onChange={(e) => handleChange(e)}
-            inputProps={{
-              placeholder: 'Например: БЦ Айсберг',
-              'data-key': 'Building'
-            }}
-          />
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Год постройки</div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            name='BuildYear'
-            value={currentObject?.Building?.BuildYear || ''}
-            onChange={(e) => handleChange(e)}
-            inputProps={{
-              'data-key': 'Building'
-            }}
-          />
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Тип здания</div>
+        <div className='field__name text'>Вход</div>
         <div className='field__action'>
           <Select
-            value={currentObject?.Type || ''}
-            name='Type'
+            value={currentObject?.HouseLineType || ''}
+            name='HouseLineType'
             onChange={(event) => handleChange(event)}
             size='small'
             sx={{ minWidth: 223 }}
@@ -470,14 +226,9 @@ export const LayoutOfficeRent = ({ register, errors }) => {
             >
               <em>Не выбрано</em>
             </MenuItem>
-            {selectList.Type.map((li, idx) => (
-              <MenuItem
-                key={idx}
-                value={li.value}
-              >
-                {li.name}
-              </MenuItem>
-            ))}
+            <MenuItem value={'first'}>Первая</MenuItem>
+            <MenuItem value={'second'}>Вторая</MenuItem>
+            <MenuItem value={'other'}>Иная</MenuItem>
           </Select>
         </div>
       </div>
@@ -548,23 +299,6 @@ export const LayoutOfficeRent = ({ register, errors }) => {
               C
             </ToggleButton>
           </ToggleButtonGroup>
-        </div>
-      </div>
-      <div className='field'>
-        <div className='field__name text'>Площадь здания, м<sup>2</sup></div>
-        <div className='field__action'>
-          <TextField
-            autoComplete='off'
-            variant='outlined'
-            size='small'
-            type='number'
-            name='BuildYear'
-            value={currentObject?.Building?.TotalArea || ''}
-            onChange={(e) => handleChange(e)}
-            inputProps={{
-              'data-key': 'Building'
-            }}
-          />
         </div>
       </div>
       <div className='field'>
@@ -911,41 +645,116 @@ export const LayoutOfficeRent = ({ register, errors }) => {
           </RadioGroup>
         </div>
       </div>
-      <hr width='100%' />
-      <span className='form__subtitle text'>Инфраструктура</span>
       <div className='field'>
-        <div className='field__action_columns'>
-          <FormControlLabel
+        <div className='field__name text'>Вход</div>
+        <div className='field__action'>
+          <Select
+            value={currentObject?.InputType || ''}
+            name='InputType'
             onChange={(event) => handleChange(event)}
-            name='HasCarWash'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasCarWash || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Автомойка
-              </span>
-            }
+            size='small'
+            sx={{ minWidth: 223 }}
+            displayEmpty
+          >
+            <MenuItem
+              disabled
+              value=''
+            >
+              <em>Не выбрано</em>
+            </MenuItem>
+            <MenuItem value={'commonFromStreet'}>
+            Общий с улицы
+            </MenuItem>
+            <MenuItem value={'commonFromYard'}>Общий со двора</MenuItem>
+            <MenuItem value={'separateFromStreet'}>
+            Отдельный с улицы
+            </MenuItem>
+            <MenuItem value={'separateFromYard'}>Отдельный со двора</MenuItem>
+          </Select>
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text'>Парковка</div>
+        <div className='field__action'>
+          <ToggleButtonGroup
+            color='primary'
+            exclusive
+            onChange={(event) => handleChange(event)}
+            value={currentObject?.Parking?.Type || null}
+          >
+            <ToggleButton
+              size='small'
+              name='Type'
+              value='ground'
+              data-key='Parking'
+            >
+              Наземная
+            </ToggleButton>
+            <ToggleButton
+              size='small'
+              name='Type'
+              value='multilevel'
+              data-key='Parking'
+            >
+              Многоуровневая
+            </ToggleButton>
+            <ToggleButton
+              size='small'
+              name='Type'
+              value='underground'
+              data-key='Parking'
+            >
+              Подземная
+            </ToggleButton>
+            <ToggleButton
+              size='small'
+              name='Type'
+              value='roof'
+              data-key='Parking'
+            >
+              На крыше
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text'>Количество мест</div>
+        <div className='field__action'>
+          <TextField
+            autoComplete='off'
+            variant='outlined'
+            size='small'
+            type='number'
+            name='PlacesCount'
+            inputProps={{ 'data-key': 'Parking' }}
+            value={currentObject?.Parking?.PlacesCount || ''}
+            onChange={(e) => handleChange(e)}
+          />
+        </div>
+      </div>
+      <div className='field'>
+        <div className='field__name text'>Стоимость парковки</div>
+        <div className='field__action'>
+          <TextField
+            autoComplete='off'
+            variant='outlined'
+            size='small'
+            type='number'
+            name='PriceMonthly'
+            inputProps={{ 'data-key': 'Parking' }}
+            value={currentObject?.Parking?.PriceMonthly || ''}
+            onChange={(e) => handleChange(e)}
+            disabled={currentObject?.Parking?.IsFree}
           />
           <FormControlLabel
             onChange={(event) => handleChange(event)}
-            name='HasBuffet'
+            name='IsFree'
+            sx={{ ml: '1rem' }}
             control={
               <Checkbox
-                checked={currentObject?.Infrastructure?.HasBuffet || false}
+                checked={currentObject?.Parking?.IsFree || false}
+                inputProps={{ 'data-key': 'Parking' }}
                 size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
               />
             }
             label={
@@ -953,469 +762,7 @@ export const LayoutOfficeRent = ({ register, errors }) => {
                 className='text'
                 style={{ fontSize: 12 }}
               >
-                Буфет
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasCarService'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasCarService || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Автосервис
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasCanteen'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasCanteen || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Столовая
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasHotel'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasHotel || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Гостиница
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasAtm'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasAtm || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Банкомат
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasPharmacy'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasPharmacy || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Аптека
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasBankDepartment'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasBankDepartment || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Отделение банка
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasCinema'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasCinema || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Кинотеатр
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasCafe'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasCafe || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Кафе
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasMedicalCenter'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasMedicalCenter || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Медицинский центр
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasBeautyShop'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasBeautyShop || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Салон красоты
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasStudio'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasStudio || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Фотосалон
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasNotaryOffice'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasNotaryOffice || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Нотариальная контора
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasPool'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasPool || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Бассейн
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasClothesStudio'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasClothesStudio || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Ателье одежды
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasWarehouse'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasWarehouse || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Складские помещения
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasPark'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasPark || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Парк
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasRestaurant'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasRestaurant || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Ресторан
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasFitnessCentre'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasFitnessCentre || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Фитнес-центр
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasSupermarket'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasSupermarket || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Супермаркет
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasMinimarket'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasMinimarket || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Минимаркет
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasShoppingArea'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasShoppingArea || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Торговая зона
-              </span>
-            }
-          />
-          <FormControlLabel
-            onChange={(event) => handleChange(event)}
-            name='HasConferenceRoom'
-            control={
-              <Checkbox
-                checked={currentObject?.Infrastructure?.HasConferenceRoom || false}
-                size='small'
-                inputProps={{
-                  'data-key': 'Infrastructure'
-                }}
-              />
-            }
-            label={
-              <span
-                className='text'
-                style={{ fontSize: 12 }}
-              >
-                Конференц-зал
+                Бесплатная
               </span>
             }
           />
@@ -1424,7 +771,7 @@ export const LayoutOfficeRent = ({ register, errors }) => {
       <hr width='100%' />
       <span className='form__subtitle text'>Цена и условия сделки</span>
       <div className='field'>
-        <div className='field__name text'>Арендная плата</div>
+        <div className='field__name text'>Ставка за м<sup>2</sup></div>
         <div className='field__action'>
           <span className='field__error-icon'></span>
           <Select
